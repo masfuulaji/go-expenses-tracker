@@ -4,14 +4,13 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"github.com/masfuulaji/go-expenses-tracker/internal/route"
 )
 
 func main() {
-    r := mux.NewRouter()
+	r := mux.NewRouter()
 
-    r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-        w.Write([]byte("Hello World!"))
-    })
+	route.SetupRoutes(r)
 
-    http.ListenAndServe(":8080", r)
+	http.ListenAndServe(":8080", r)
 }

@@ -20,7 +20,7 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: movie 
+      POSTGRES_DB: expenses
     container_name: db-expenses
     volumes:
       - postgres_data:/var/lib/postgresql/data

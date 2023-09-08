@@ -29,4 +29,8 @@ func SetupRoutes(r *mux.Router) {
     categoryHandler := handlers.NewCategoryHandler(services.NewCategoryService(db.DB))
     category := r.PathPrefix("/category").Subrouter()
     category.HandleFunc("", categoryHandler.GetCategories).Methods("GET")
+    category.HandleFunc("/{id}", categoryHandler.GetCategory).Methods("GET")
+    category.HandleFunc("", categoryHandler.CreateCategory).Methods("POST")
+    category.HandleFunc("/{id}", categoryHandler.UpdateCategory).Methods("PUT")
+    category.HandleFunc("/{id}", categoryHandler.DeleteCategory).Methods("DELETE")
 }

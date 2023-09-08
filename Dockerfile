@@ -4,6 +4,9 @@ FROM golang:1.21
 # Set the working directory inside the container
 WORKDIR /app
 
+# Install golang-migrate
+RUN go install -tags 'postgres' github.com/golang-migrate/migrate/v4/cmd/migrate@latest
+
 # Install Air for hot reloading
 RUN go install github.com/cosmtrek/air@latest
 

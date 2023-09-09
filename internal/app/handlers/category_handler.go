@@ -3,8 +3,8 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 
+	"github.com/gorilla/mux"
 	"github.com/masfuulaji/go-expenses-tracker/internal/app/request"
 	"github.com/masfuulaji/go-expenses-tracker/internal/app/services"
 )
@@ -50,20 +50,15 @@ func (h *CategoryHandlerImpl) GetCategories(w http.ResponseWriter, r *http.Reque
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-
+    
     w.Header().Set("Content-Type", "application/json")
     w.WriteHeader(http.StatusOK)
     json.NewEncoder(w).Encode(categories)
 }
 
 func (h *CategoryHandlerImpl) GetCategory(w http.ResponseWriter, r *http.Request) {
-    id := r.URL.Query().Get("id")
-    idn ,err:= strconv.Atoi(id)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
-    category, err := h.CategoryService.GetCategory(idn)
+    id := mux.Vars(r)["id"]
+    category, err := h.CategoryService.GetCategory(id)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
@@ -76,19 +71,14 @@ func (h *CategoryHandlerImpl) GetCategory(w http.ResponseWriter, r *http.Request
 
 func (h *CategoryHandlerImpl) UpdateCategory(w http.ResponseWriter, r *http.Request) {
     id := r.URL.Query().Get("id")
-    idn ,err:= strconv.Atoi(id)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
     category := &request.CategoryRequest{}
-    err = json.NewDecoder(r.Body).Decode(category)
+    err := json.NewDecoder(r.Body).Decode(category)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
 
-    err = h.CategoryService.UpdateCategory(idn, category)
+    err = h.CategoryService.UpdateCategory(id, category)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
@@ -101,13 +91,7 @@ func (h *CategoryHandlerImpl) UpdateCategory(w http.ResponseWriter, r *http.Requ
 
 func (h *CategoryHandlerImpl) DeleteCategory(w http.ResponseWriter, r *http.Request) {
     id := r.URL.Query().Get("id")
-    idn ,err:= strconv.Atoi(id)
-    if err != nil {
-        http.Error(w, err.Error(), http.StatusInternalServerError)
-        return
-    }
-
-    err = h.CategoryService.DeleteCategory(idn)
+    err := h.CategoryService.DeleteCategory(id)
     if err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return

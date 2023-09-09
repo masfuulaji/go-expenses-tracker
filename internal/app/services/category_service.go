@@ -2,17 +2,17 @@ package services
 
 import (
 	"github.com/jmoiron/sqlx"
-	"github.com/masfuulaji/go-expenses-tracker/internal/app/models"
 	"github.com/masfuulaji/go-expenses-tracker/internal/app/repositories"
 	"github.com/masfuulaji/go-expenses-tracker/internal/app/request"
+	"github.com/masfuulaji/go-expenses-tracker/internal/app/response"
 )
 
 type CategoryService interface {
     CreateCategory(category *request.CategoryRequest) error
-    GetCategories() ([]models.Category, error)
-    GetCategory(id int) (*models.Category, error)
-    UpdateCategory(id int, category *request.CategoryRequest) error
-    DeleteCategory(id int) error
+    GetCategories() ([]response.CategoryResponse, error)
+    GetCategory(id string) (*response.CategoryResponse, error)
+    UpdateCategory(id string, category *request.CategoryRequest) error
+    DeleteCategory(id string) error
 }
 type CategoryServiceImpl struct {
     CategoryRepository *repositories.CategoryRepositoryImpl
@@ -26,18 +26,18 @@ func (s *CategoryServiceImpl) CreateCategory(category *request.CategoryRequest) 
 	return s.CategoryRepository.CreateCategory(category)
 }
 
-func (s *CategoryServiceImpl) GetCategories() ([]models.Category, error) {
+func (s *CategoryServiceImpl) GetCategories() ([]response.CategoryResponse, error) {
 	return s.CategoryRepository.GetCategories()
 }
 
-func (s *CategoryServiceImpl) GetCategory(id int) (*models.Category, error) {
+func (s *CategoryServiceImpl) GetCategory(id string) (*response.CategoryResponse, error) {
 	return s.CategoryRepository.GetCategory(id)
 }
 
-func (s *CategoryServiceImpl) UpdateCategory(id int, category *request.CategoryRequest) error {
+func (s *CategoryServiceImpl) UpdateCategory(id string, category *request.CategoryRequest) error {
 	return s.CategoryRepository.UpdateCategory(id, category)
 }
 
-func (s *CategoryServiceImpl) DeleteCategory(id int) error {
+func (s *CategoryServiceImpl) DeleteCategory(id string) error {
 	return s.CategoryRepository.DeleteCategory(id)
 }

@@ -22,5 +22,4 @@ func ConnectDB() (*DB, error) {
 
 func (db *DB) Ping(ctx context.Context) error {
     return db.DB.PingContext(ctx)
-    
 }

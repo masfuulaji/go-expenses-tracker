@@ -24,14 +24,14 @@ type CategoryRepositoryImpl struct {
 }
 
 func NewCategoryRepository(db *sqlx.DB) *CategoryRepositoryImpl {
-    return &CategoryRepositoryImpl{db: db}
+	return &CategoryRepositoryImpl{db: db}
 }
 
 func (r *CategoryRepositoryImpl) CreateCategory(category *request.CategoryRequest) error {
 	query := `INSERT INTO category (name, description, created_at, updated_at) VALUES ($1, $2, $3, $4)`
 	createdAt := time.Now().Format("2006-01-02 15:04:05")
 	updatedAt := time.Now().Format("2006-01-02 15:04:05")
-	err := r.db.QueryRow(query, category.Name, category.Description, createdAt, updatedAt).Scan()
+	_, err := r.db.Exec(query, category.Name, category.Description, createdAt, updatedAt)
 	if err != nil {
 		return err
 	}
@@ -39,7 +39,7 @@ func (r *CategoryRepositoryImpl) CreateCategory(category *request.CategoryReques
 }
 
 func (r *CategoryRepositoryImpl) GetCategories() ([]response.CategoryResponse, error) {
-    categories := []response.CategoryResponse{}
+	categories := []response.CategoryResponse{}
 	query := `SELECT id, name, description, created_at, updated_at FROM category WHERE deleted_at IS NULL`
 
 	err := r.db.Select(&categories, query)
@@ -50,7 +50,7 @@ func (r *CategoryRepositoryImpl) GetCategories() ([]response.CategoryResponse, e
 }
 
 func (r *CategoryRepositoryImpl) GetCategory(id string) (*response.CategoryResponse, error) {
-	var category response.CategoryResponse 
+	var category response.CategoryResponse
 	query := `SELECT id, name, description, created_at, updated_at FROM category WHERE id = $1 AND deleted_at IS NULL`
 	err := r.db.Get(&category, query, id)
 	if err != nil {

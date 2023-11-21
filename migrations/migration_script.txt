@@ -1,2 +1,6 @@
+# example create migration
+migrate create -ext sql -dir migrations -format 20060102150405 create_table_expenses
+
+# up and down migrations
 migrate -database "postgres://postgres:postgres@localhost:5442/expenses?sslmode=disable" -path migrations up
 migrate -database "postgres://postgres:postgres@localhost:5442/expenses?sslmode=disable" -path migrations down

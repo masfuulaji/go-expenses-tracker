@@ -8,18 +8,18 @@ import (
 )
 
 type DB struct {
-    DB *sqlx.DB
+	DB *sqlx.DB
 }
 
 func ConnectDB() (*DB, error) {
 	db, err := sqlx.Connect("postgres", "host=db port=5432 user=postgres password=postgres dbname=expenses sslmode=disable")
 	if err != nil {
-        return &DB{DB: nil}, err
+		return &DB{DB: nil}, err
 	}
 
-    return &DB{DB: db}, nil
+	return &DB{DB: db}, nil
 }
 
 func (db *DB) Ping(ctx context.Context) error {
-    return db.DB.PingContext(ctx)
+	return db.DB.PingContext(ctx)
 }

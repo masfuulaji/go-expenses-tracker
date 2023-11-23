@@ -6,14 +6,15 @@ import (
 	"github.com/jmoiron/sqlx"
 	"github.com/masfuulaji/go-expenses-tracker/internal/app/models"
 	"github.com/masfuulaji/go-expenses-tracker/internal/app/request"
+	"github.com/masfuulaji/go-expenses-tracker/internal/app/response"
 )
 
 var expense models.Expense
 
 type ExpenseRepository interface {
 	CreateExpense(expense *request.ExpenseRequest) error
-	GetExpenses() ([]models.Expense, error)
-	GetExpense(id string) (*models.Expense, error)
+	GetExpenses() ([]response.ExpenseResponse, error)
+	GetExpense(id string) (*response.ExpenseResponse, error)
 	UpdateExpense(id string, expense *request.ExpenseRequest) error
 	DeleteExpense(id string) error
 }
@@ -37,8 +38,8 @@ func (r *ExpenseRepositoryImpl) CreateExpense(expense *request.ExpenseRequest) e
 	return nil
 }
 
-func (r *ExpenseRepositoryImpl) GetExpenses() ([]models.Expense, error) {
-	expenses := []models.Expense{}
+func (r *ExpenseRepositoryImpl) GetExpenses() ([]response.ExpenseResponse, error) {
+	expenses := []response.ExpenseResponse{}
 	query := `SELECT id, date, description, category_id, incoming, outgoing, balance, created_at, updated_at FROM expense WHERE deleted_at IS NULL`
 	err := r.db.Select(&expenses, query)
 	if err != nil {
@@ -47,8 +48,8 @@ func (r *ExpenseRepositoryImpl) GetExpenses() ([]models.Expense, error) {
 	return expenses, nil
 }
 
-func (r *ExpenseRepositoryImpl) GetExpense(id string) (*models.Expense, error) {
-	var expense models.Expense
+func (r *ExpenseRepositoryImpl) GetExpense(id string) (*response.ExpenseResponse, error) {
+	var expense response.ExpenseResponse
 	query := `SELECT id, date, description, category_id, incoming, outgoing, balance, created_at, updated_at FROM expense WHERE id = $1 AND deleted_at IS NULL`
 	err := r.db.Get(&expense, query, id)
 	if err != nil {

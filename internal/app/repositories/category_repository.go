@@ -13,8 +13,8 @@ var category models.Category
 
 type CategoryRepository interface {
 	CreateCategory(category *request.CategoryRequest) error
-	GetCategories() ([]models.Category, error)
-	GetCategory(id string) (*models.Category, error)
+	GetCategories() ([]response.CategoryResponse, error)
+	GetCategory(id string) (*response.CategoryResponse, error)
 	UpdateCategory(id string, category *request.CategoryRequest) error
 	DeleteCategory(id string) error
 }

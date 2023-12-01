@@ -1,0 +1,52 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>App</title>
+</head>
+<body>
+    <h1>Category Form</h1>
+    <form action="" id="form-input">
+        <input type="hidden" name="id" id="id" value="{{.ID}}">
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name" value="{{.Name}}">
+        <button type="button" onclick="save()">SAVE</button>
+    </form>
+  <script>
+    function save() {
+      if($('#id').val() == '') {
+        url = '/category';
+        method = 'POST';
+      } else {
+        url = '/category/' + $('#id').val();
+        method = 'PUT';
+      }
+      var formDataArray = $('#form-input').serializeArray();
+
+      // Convert the array to a JSON object
+      var formDataJSON = {};
+      $.each(formDataArray, function(index, field) {
+        formDataJSON[field.name] = field.value;
+      });
+
+      console.log(formDataJSON);
+      $.ajax({
+        url: url,
+        type: method,
+        data: JSON.stringify(formDataJSON),
+        dataType: 'json',
+        success: function(data) {
+          window.location.href = '/category';
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      })
+    }
+  </script>
+</body>
+</html>

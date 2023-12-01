@@ -1,0 +1,33 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>App</title>
+</head>
+<body>
+    <h1>Category List</h1>
+    <a href="/category/add">Add Task</a>
+    <ul>
+        {{range .}}
+        <li>
+            {{.Name}}
+            <button type="button" onclick="deleteCategory({{.ID}})">DELETE</button>
+            <a href="/category/edit/{{.ID}}">Edit</a>
+        </li>
+        {{end}}
+    </ul>
+
+    <script>
+    function deleteCategory(id) {
+      fetch(`/category/${id}`, {
+        method: 'DELETE',
+      }).then(() => {
+          window.location.reload();
+      });
+    }
+    </script>
+</body>
+</html>
